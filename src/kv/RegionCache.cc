@@ -236,6 +236,7 @@ std::vector<uint64_t> RegionCache::getAllValidTiFlashStores(Backoffer & bo, cons
     RegionPtr cached_region = getRegionByIDFromCache(region_id);
     if (cached_region == nullptr)
     {
+	// log->information("gjt debug getAllValidTiFlashStores cached_region is null");
         all_stores.emplace_back(current_store.id);
         return all_stores;
     }
@@ -247,8 +248,10 @@ std::vector<uint64_t> RegionCache::getAllValidTiFlashStores(Backoffer & bo, cons
     auto peers = selectTiFlashPeers(bo, cached_region->meta);
     for (const auto & peer : peers)
     {
-        if (peer.store_id() == current_store.id)
-            continue;
+	// log->information("gjt debug getAllValidTiFlashStores iter peer");
+        // if (peer.store_id() == current_store.id)
+        // //     continue;
+	// 	log->information("gjt debug getAllValidTiFlashStores is same with cur store");
         all_stores.emplace_back(peer.store_id());
     }
     return all_stores;
